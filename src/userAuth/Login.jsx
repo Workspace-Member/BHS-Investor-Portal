@@ -18,18 +18,22 @@ const Login = ({ isUser, setIsUser }) => {
         className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center"
       >
         <div className="w-full md:w-1/2 mb-8 md:mb-0 flex flex-col items-center justify-center">
-          <div className="text-center mb-8">
+          <div className="text-center mb-5">
             <h1 className="text-4xl font-bold text-gray-800">Welcome to</h1>
-            <h2 className="text-3xl font-semibold text-[#EBB251]">
-              Bhavya Haulage Services
-            </h2>
+            
           </div>
           <img
             src="logo_bhavya.png"
             alt="Bhavya Haulage Services Logo"
             className="w-48 h-48 object-contain"
           />
+          <div className="text-center mt-1">
+            <h2 className="text-3xl font-semibold text-[#EBB251]">
+              Bhavya Haulage Services
+            </h2>
+          </div>
         </div>
+        
         <div className="w-full md:w-1/2 md:pl-8 flex justify-center">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
