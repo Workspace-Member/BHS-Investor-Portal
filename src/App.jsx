@@ -1,27 +1,26 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./userAuth/Login";
 import Signup from "./userAuth/Signup";
+import Signedup from "./userAuth/Signedup";
 import Profile from "./Profile";
 import Assets from "./Assets";
 import Contract from "./Contract";
 import Asset from "./Asset";
 import Investment from "./Investment";
 import NavBar from "./NavBar";
-// <<<<<<< Updated upstream
-// import Trips from "./Trips";
-// =======
-// >>>>>>> Stashed changes
 import ContactForm from "./Contact";
 import GuidePage from "./Guide";
 import Trips from "./Trips";
 import { useState } from "react";
 import Review from "./userAuth/Review";
+import Dashboard from "./Dashboard";
+import Investments from "./Investments";
 // <<<<<<< HEAD
 // =======
 
 // >>>>>>> b0ccbed (investment ready 2)
 const App = () => {
-  const [isUser, setIsUser] = useState(false);
+  const [isUser, setIsUser] = useState(true);
   return (
     <>
       <BrowserRouter>
@@ -32,7 +31,7 @@ const App = () => {
               path="/"
               element={
                 isUser ? (
-                  <Investment />
+                  <Dashboard />
                 ) : (
                   <Login isUser={isUser} setIsUser={setIsUser} />
                 )
@@ -46,20 +45,18 @@ const App = () => {
               path="/signup"
               element={<Signup isUser={isUser} setIsUser={setIsUser} />}
             />
-            <Route path="/home" element={<Investment />} />
+            <Route
+              path="/signedup"
+              element={<Signedup isUser={isUser} setIsUser={setIsUser} />}
+            />
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/assets" element={<Assets />} />
             <Route path="/contract" element={<Contract />} />
             <Route path="/asset" element={<Asset />} />
-            {/* <<<<<<< Updated upstream
             <Route path="/trips" element={<Trips />} />
-            <Route path="/contact" element={<ContactForm />} />
-=======
-        
-            
->>>>>>> Stashed changes */}
-
-            <Route path="/trips" element={<Trips />} />
+            <Route path="/investments" element={<Investments />} />
+            <Route path="/investment" element={<Investment />} />
             <Route path="/contact" element={<ContactForm />} />
             <Route path="/guide" element={<GuidePage />} />
             <Route path="/review" element={<Review />} />

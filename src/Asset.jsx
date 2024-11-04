@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import TheTable from "./TheTable";
 
 const Asset = () => {
   const vehicleInfo = {
@@ -318,33 +319,33 @@ const Asset = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-64px)]">
+    <div className="flex h-[calc(100vh-64px)] bg-[#322323]">
       {/* Left section: Vehicle information and tables */}
-      <div className="w-full lg:w-3/5 md:w-3/5  bg-gray-100 p-4 overflow-y-auto custom-scrollbar">
+      <div className="w-full lg:w-3/5 md:w-3/5  bg-[#322323] p-4 overflow-y-auto custom-scrollbar">
         {/* Vehicle Information Card */}
-        <div className="bg-white rounded-lg shadow-md p-6 my-6 lg:m-6">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+        <div className="rounded-lg shadow-md p-6 my-6 lg:m-6 bg-[#493939]">
+          <h2 className="text-2xl font-bold mb-4 text-[#FF9321] text-center ">
             VEHICLE INFORMATION
           </h2>
           <div className="grid grid-cols-2 gap-6 lg:m-6 my-6">
             {Object.entries(vehicleInfo).map(([key, value]) => (
               <div
                 key={key}
-                className="p-4 bg-gray-50 rounded-lg shadow-md flex flex-col"
+                className="p-4 bg-[#493939] rounded-lg shadow-md flex flex-col border border-[#FF9321]"
               >
-                <span className="text-lg font-bold text-center">{key}</span>
-                <span className="text-xl font-semibold text-red-900 text-center">
+                <span className="text-lg font-bold text-center text-[#FF9321]">{key}</span>
+                <span className="text-xl font-semibold text-white text-center">
                   {value}
                 </span>
               </div>
             ))}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 my-6 lg:m-6 lg:hidden md:hidden">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+        <div className="bg-[#493939] rounded-lg p-6 my-6 lg:m-6 lg:hidden md:hidden">
+          <h2 className="text-2xl font-bold mb-4 text-[#FF9321] text-center bg-[#493939]">
             CURRENT LOCATION
           </h2>
-          <div className="w-full h-[300px]">
+          <div className="w-full h-[300px] ">
             <iframe
               className="w-full h-full rounded-lg"
               title="Map"
@@ -353,11 +354,11 @@ const Asset = () => {
           </div>
         </div>
         {/* Truck History Table */}
-        <div className="bg-white rounded-lg shadow-md py-6 my-6 lg:m-6">
-          <h2 className="text-2xl font-bold lg:mb-4  text-gray-800 text-center">
+        <div className="bg-[#493939] rounded-lg shadow-md py-6 my-6 lg:m-6">
+          <h2 className="text-2xl font-bold lg:mb-4 text-[#FF9321] text-center">
             TRUCK HISTORY
           </h2>
-          <AssetsTable
+          <TheTable
             col={TruckHistoryColumn}
             row={TruckHistoryRow}
             small={true}
@@ -365,26 +366,26 @@ const Asset = () => {
         </div>
 
         {/* Trip History Table */}
-        <div className="bg-white rounded-lg shadow-md py-6 my-6 lg:m-6">
-          <h2 className="text-2xl font-bold lg:mb-4 text-gray-800 text-center">
+        <div className="bg-[#493939] rounded-lg shadow-md py-6 my-6 lg:m-6">
+          <h2 className="text-2xl font-bold lg:mb-4 text-[#FF9321] text-center">
             TRIP HISTORY
           </h2>
-          <AssetsTable col={TripsColumn} row={TripsRow} small={true} />
+          <TheTable col={TripsColumn} row={TripsRow} small={true} />
         </div>
 
         {/* New Fuel Chart Card */}
-        <div className="bg-white rounded-lg shadow-md p-6 my-6 lg:m-6">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+        <div className="bg-[#493939] rounded-lg shadow-md p-6 my-6 lg:m-6">
+          <h2 className="text-2xl font-bold mb-4 text-[#FF9321] text-center">
             FUEL CHART
           </h2>
-          <div style={{ width: "100%", height: 300 }}>
+          <div className="text-white" style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
               <LineChart data={fuelData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                <Line dataKey="fuel" stroke="#B22222" />
+                <Line dataKey="fuel" stroke="#FF9321" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -393,11 +394,10 @@ const Asset = () => {
 
       {/* Right section: Map (visible only on large screens) */}
       <div
-        className="hidden lg:block lg:w-2/5 md:block md:w-2/5"
-        style={paperStyles}
+        className="hidden lg:block lg:w-2/5 md:block md:w-2/5 bg-[#493939]"
       >
         <div className="h-full w-full p-6 flex flex-col">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+          <h2 className="text-2xl font-bold mb-4 text-[#FF9321] text-center">
             CURRENT LOCATION
           </h2>
           <div className="h-[calc(100%-40px)] w-full">

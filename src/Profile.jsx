@@ -1,13 +1,15 @@
-import React, { useState, useRef } from "react";
-import { ArrowRight, Mail, Phone, MapPin, Cake, User, Edit2 } from "lucide-react";
+import React from "react";
+import { ArrowRight, Mail, Phone, MapPin, Cake, User } from "lucide-react";
 import { Link as RouteLink } from "react-router-dom";
 
 const Card = ({ className, children }) => (
-  <div className={`bg-white shadow-md rounded-lg ${className}`}>{children}</div>
+  <div className={`bg-[#493939] shadow-md rounded-lg ${className}`}>{children}</div>
 );
+
 const CardHeader = ({ children }) => (
-  <div className="p-4 border-b">{children}</div>
+  <div className="p-4 border-b border-[#FF9321]">{children}</div>
 );
+
 const CardContent = ({ children }) => <div className="p-4">{children}</div>;
 
 const user = {
@@ -23,7 +25,7 @@ const user = {
 const ProfileCard = ({ title, children }) => (
   <Card className="w-full max-w-3xl mx-auto my-4">
     <CardHeader>
-      <h3 className="text-xl font-semibold text-gray-800 text-center">
+      <h3 className="text-xl font-semibold text-[#FF9321] text-center">
         {title}
       </h3>
     </CardHeader>
@@ -32,20 +34,16 @@ const ProfileCard = ({ title, children }) => (
 );
 
 const ProfileItem = ({ icon: Icon, label, value }) => (
-  <div className="flex items-center py-2 border-b last:border-b-0">
-    <Icon className="w-5 h-5 text-[#EBB251] mr-3" />
+  <div className="flex items-center py-2 border-b border-gray-600 last:border-b-0">
+    <Icon className="w-5 h-5 text-[#FF9321] mr-3" />
     <div>
-      <p className="font-medium text-gray-800">{label}</p>
-      <p className="text-gray-600">{value}</p>
+      <p className="font-medium text-white">{label}</p>
+      <p className="text-gray-300">{value}</p>
     </div>
   </div>
 );
 
 function Profile() {
-  const [profileImage, setProfileImage] = useState("unnamed.gif");
-  const [isHovering, setIsHovering] = useState(false);
-  const fileInputRef = useRef(null);
-
   const convertDate = (dateStr) => {
     const [day, month, year] = dateStr.split("/");
     const date = new Date(`${year}-${month}-${day}`);
@@ -56,45 +54,15 @@ function Profile() {
     }).format(date);
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setProfileImage(e.target.result);
-      reader.readAsDataURL(file);
-    }
-  };
-
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="bg-[#EBB251] p-6 text-center relative">
-          <div
-            className="relative inline-block"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            <img
-              className="h-32 w-32 rounded-full border-4 border-white mx-auto mb-4"
-              src={profileImage}
-              alt={user.name}
-            />
-            {isHovering && (
-              <div
-                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full cursor-pointer"
-                onClick={() => fileInputRef.current.click()}
-              >
-                <Edit2 className="w-8 h-8 text-white" />
-              </div>
-            )}
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleImageUpload}
-              className="hidden"
-              accept="image/*"
-            />
-          </div>
+    <div className="w-full flex flex-col bg-[#322323] min-h-screen py-8 px-4">
+      <div className="max-w-4xl mx-auto bg-[#493939] shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-[#FF9321] p-6 text-center">
+          <img
+            className="h-32 w-32 rounded-full border-4 border-white mx-auto mb-4"
+            src="unnamed.gif"
+            alt={user.name}
+          />
           <h1 className="text-3xl font-bold text-white mb-2">{user.name}</h1>
         </div>
 
@@ -113,16 +81,6 @@ function Profile() {
             <ProfileItem icon={Mail} label="Email" value={user.email} />
             <ProfileItem icon={Phone} label="Phone" value={user.phone} />
             <ProfileItem icon={MapPin} label="Address" value={user.address} />
-          </ProfileCard>
-
-          <ProfileCard title="Investment Information">
-            <RouteLink
-              to="/"
-              className="inline-flex items-center justify-center w-full text-[#EBB251] hover:text-[#D9A344] transition-colors"
-            >
-              View investment details
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </RouteLink>
           </ProfileCard>
         </div>
       </div>

@@ -1,145 +1,108 @@
-import React, { useState, useEffect } from "react";
-import { jsPDF } from "jspdf";
-import StatsTable from "./StatsTable";
+import React, { useState } from "react";
 
 const Investment = () => {
-  const [data, setData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [investmentInfo, setInvestmentInfo] = useState({
+    "Investment ID": "INV001",
+    "Investor Name": "Deepak Bhagchandani",
+    "Investor ID": "I1",
+    Amount: "50000",
+    ROI: "10096",
+    Contract: "contract_INV001.pdf",
+    "Deposit Date": "2022-01-15",
+    "Maturity Date": "2023-01-15",
+  });
 
-  useEffect(() => {
-    // Generate random data for the line chart
-    const generateRandomData = () => {
-      const currentDate = new Date();
-      return [...Array(28)].map((_, i) => {
-        const date = new Date(
-          currentDate.getTime() - (27 - i) * 24 * 60 * 60 * 1000
-        );
-        const views = Math.floor(Math.random() * 1000000);
-        return {
-          date: `${date.getMonth() + 1}/${date.getDate()}`,
-          views: views,
-        };
-      });
-    };
-
-    setData(generateRandomData());
-  }, []);
-
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-    doc.addImage("/path-to-chart.png", "PNG", 10, 10, 190, 120);
-    doc.setFontSize(16);
-    doc.text("Investment Dashboard", 20, 150);
-    doc.setFontSize(12);
-    doc.text("John Doe", 20, 170);
-    doc.text("Investment ID", 20, 180);
-    doc.save("investment-dashboard.pdf");
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
   };
 
-  const downloadContract = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Contract Details", 20, 20);
-    doc.setFontSize(12);
-    doc.text("Contract ID: 12345", 20, 40);
-    doc.text("Start Date: 01/01/2023", 20, 50);
-    doc.text("End Date: 12/31/2023", 20, 60);
-    doc.text("Investment Amount: $100,000", 20, 70);
-    doc.save("investment-contract.pdf");
+  const handleChange = (field, value) => {
+    setInvestmentInfo((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    // Here you would typically send the updated information to a backend
+    console.log("Saving updated investment info:", investmentInfo);
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    // Handle file upload logic here
+    console.log("Uploaded file:", file);
+    setInvestmentInfo((prev) => ({
+      ...prev,
+      Contract: file ? file.name : prev.Contract,
+    }));
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        {/* Profile Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold">Hello, John Doe</h2>
-          <p className="text-gray-500 text-base sm:text-lg">Investment ID</p>
+    <div className="flex flex-col min-h-screen bg-[#322323]">
+      <div className="flex justify-center w-full flex-grow bg-[#322323] p-4 overflow-y-auto custom-scrollbar">
+        <div className="w-4/5 bg-[#493939] rounded-lg shadow-md p-6 my-6 lg:m-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="ml-10 text-3xl font-bold text-[#FF9321]">
+              Investment
+            </h2>
+
+          </div>
+
+          <div className="grid grid-cols-1 gap-0 mt-8 ml-4 w-full">
+            <div className="border border-[#FF9321] rounded-lg p-4 mb-4">
+              {Object.entries(investmentInfo).map(([fieldKey, fieldValue]) => (
+                <div key={fieldKey} className="mb-6">
+                  <div className="p-4 flex justify-around items-center w-full h-12">
+                    <span className="w-2/5 text-md font-bold text-center text-[#FF9321]">
+                      {fieldKey}
+                    </span>
+                    {isEditing ? (
+                      fieldKey === "Contract" ? (
+                        <input
+                          type="file"
+                          onChange={handleFileUpload}
+                          className="w-1/2 text-md font-semibold text-white text-center"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          value={fieldValue}
+                          onChange={(e) =>
+                            handleChange(fieldKey, e.target.value)
+                          }
+                          className="w-1/2 text-md font-semibold text-white text-center border rounded-lg border-[#FF9321] bg-[#322323]"
+                        />
+                      )
+                    ) : fieldKey === "Contract" ? (
+                      <span className="w-1/2 text-md font-semibold text-white text-center">
+                        <a
+                          href="#"
+                          className="text-[#FF9321] underline"
+                          onClick={() =>
+                            console.log("Download contract:", fieldValue)
+                          }
+                        >
+                          {fieldValue}
+                        </a>
+                      </span>
+                    ) : (
+                      <span className="w-1/2 text-md font-semibold text-white text-center">
+                        {fieldValue}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
-
-        <main>
-          {/* First row of cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card
-              title="Investment Value"
-              value="AED 1.80M"
-              subtext=""
-              subtextColor="text-green-500"
-            />
-            <Card
-              title="No. of Assets"
-              value="12"
-              subtext=""
-              subtextColor="text-gray-500"
-            />
-            <Card
-              title="Ticket size"
-              value="AED 150K"
-              subtext=""
-              subtextColor="text-green-500"
-            />
-            <Card
-              title="Download Contract"
-              button={<DownloadButton onClick={downloadContract} />}
-            />
-          </div>
-
-          {/* Second row of cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card
-              title="Current Investment Value*"
-              value="AED 2.11M"
-              subtext=""
-              subtextColor="text-green-500"
-            />
-            <Card
-              title="Agreed ROI PA"
-              value="10%"
-              subtext=""
-              subtextColor="text-gray-500"
-            />
-            <Card
-              title="No. of Trips"
-              value="108"
-              subtext=""
-              subtextColor="text-green-500"
-            />
-           
-          </div>
-
-          <h1 className="text-2xl sm:text-3xl font-semibold mb-6">
-            Latest Updates
-          </h1>
-          <StatsTable />
-          <p>*Terms and Conditions Apply</p>
-        </main>
       </div>
     </div>
   );
 };
-
-const Card = ({ title, value, subtext, subtextColor, button }) => (
-  <div className="p-4 bg-white rounded-lg shadow-md">
-    <h2 className="text-lg font-bold mb-2">{title}</h2>
-    {value && <p className="text-2xl sm:text-3xl font-semibold">{value}</p>}
-    {subtext && <p className={`text-sm ${subtextColor}`}>{subtext}</p>}
-    {button}
-  </div>
-);
-
-const DownloadButton = ({ onClick }) => (
-  <button
-    onClick={onClick}
-    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center mt-2"
-  >
-    <svg
-      className="fill-current w-4 h-4 mr-2"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-    >
-      <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-    </svg>
-    <span>Download</span>
-  </button>
-);
 
 export default Investment;
