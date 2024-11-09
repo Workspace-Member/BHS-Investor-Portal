@@ -1,69 +1,163 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./userAuth/Login";
-import Signup from "./userAuth/Signup";
-import Signedup from "./userAuth/Signedup";
-import Profile from "./Profile";
-import Assets from "./Assets";
-import Contract from "./Contract";
-import Asset from "./Asset";
-import Investment from "./Investment";
-import NavBar from "./NavBar";
-import ContactForm from "./Contact";
-import GuidePage from "./Guide";
-import Trips from "./Trips";
-import { useState } from "react";
-import Review from "./userAuth/Review";
-import Dashboard from "./Dashboard";
-import Investments from "./Investments";
-// <<<<<<< HEAD
-// =======
+// src/App.jsx
 
-// >>>>>>> b0ccbed (investment ready 2)
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Signedup from "./components/Signedup";
+import Review from "./components/Review";
+import Profile from "./components/Profile";
+import Assets from "./components/Assets";
+import Contract from "./components/Contract";
+import Asset from "./components/Asset";
+import Investment from "./components/Investment";
+import Investments from "./components/Investments";
+import Trips from "./components/Trips";
+import Dashboard from "./components/Dashboard";
+//import ContactForm from "./components/ContactForm";
+import GuidePage from "./components/Guide";
+import NavBar from "./components/NavBar";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const App = () => {
-  const [isUser, setIsUser] = useState(true);
   return (
-    <>
+    <AuthProvider>
       <BrowserRouter>
-        <NavBar isUser={isUser} setIsUser={setIsUser} />
+        <NavBar />
         <div className="w-full h-full bg-[#EBEBEB]">
           <Routes>
+            {/* Home Route - Redirect to Dashboard if authenticated, else to Login */}
             <Route
               path="/"
               element={
-                isUser ? (
+                <ProtectedRoute>
                   <Dashboard />
-                ) : (
-                  <Login isUser={isUser} setIsUser={setIsUser} />
-                )
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Login Route */}
+            <Route path="/login" element={<Login />} />
+
+            {/* Signup Route */}
+            <Route path="/signup" element={<Signup />} />
+
+            {/* Signed Up Confirmation Route */}
+            <Route path="/signedup" element={<Signedup />} />
+
+            {/* Dashboard Route */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Profile Route */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Assets Routes */}
+            <Route
+              path="/assets"
+              element={
+                <ProtectedRoute>
+                  <Assets />
+                </ProtectedRoute>
               }
             />
             <Route
-              path="/login"
-              element={<Login isUser={isUser} setIsUser={setIsUser} />}
+              path="/asset/:id"
+              element={
+                <ProtectedRoute>
+                  <Asset />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Investment Routes */}
+            <Route
+              path="/investments"
+              element={
+                <ProtectedRoute>
+                  <Investments />
+                </ProtectedRoute>
+              }
             />
             <Route
-              path="/signup"
-              element={<Signup isUser={isUser} setIsUser={setIsUser} />}
+              path="/investment/:id"
+              element={
+                <ProtectedRoute>
+                  <Investment />
+                </ProtectedRoute>
+              }
             />
+
+            {/* Trips Routes */}
             <Route
-              path="/signedup"
-              element={<Signedup isUser={isUser} setIsUser={setIsUser} />}
+              path="/trips"
+              element={
+                <ProtectedRoute>
+                  <Trips />
+                </ProtectedRoute>
+              }
             />
-            <Route path="/home" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/assets" element={<Assets />} />
-            <Route path="/contract" element={<Contract />} />
-            <Route path="/asset" element={<Asset />} />
-            <Route path="/trips" element={<Trips />} />
-            <Route path="/investments" element={<Investments />} />
-            <Route path="/investment" element={<Investment />} />
-            <Route path="/contact" element={<ContactForm />} />
-            <Route path="/guide" element={<GuidePage />} />
-            <Route path="/review" element={<Review />} />
+
+            {/* Contract Route */}
+            <Route
+              path="/contract"
+              element={
+                <ProtectedRoute>
+                  <Contract />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Contact Form Route */}
+            {/* <Route
+              path="/contact"
+              element={
+                <ProtectedRoute>
+                  <ContactForm />
+                </ProtectedRoute>
+              }
+            /> */}
+
+            {/* Guide Page Route */}
+            <Route
+              path="/guide"
+              element={
+                <ProtectedRoute>
+                  <GuidePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Review Route */}
+            <Route
+              path="/review"
+              element={
+                <ProtectedRoute>
+                  <Review />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Catch-All Route - Redirect to Home */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
       </BrowserRouter>
-    </>
+    </AuthProvider>
   );
 };
 

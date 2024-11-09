@@ -1,14 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+// src/components/Signedup.jsx
+
+import React from "react";
+import { motion } from "framer-motion";
+import { CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Signedup = () => {
   const navigate = useNavigate();
 
   const handleProceed = () => {
-    // Navigate to the login page or dashboard
-    navigate('/login'); // Change this path based on your routing setup
+    // Navigate to the login page
+    navigate("/login"); // Ensure this path matches your routing setup
   };
 
   return (
@@ -24,12 +26,12 @@ const Signedup = () => {
 
         {/* Success Message */}
         <div className="mt-6 text-center">
-          <h2 className="text-3xl font-bold text-[#FF9321]">Signup Successful!</h2>
+          <h2 className="text-3xl font-extrabold text-[#FF9321]">
+            Registration Successful!
+          </h2>
           <p className="mt-4 text-gray-300 text-lg">
-            Thank you for signing up. Our team will review your information and contact you shortly.
-          </p>
-          <p className="mt-2 text-gray-300 text-lg">
-            We appreciate your patience.
+            Thank you for signing up. Please verify your OTP to complete the
+            registration process.
           </p>
         </div>
 

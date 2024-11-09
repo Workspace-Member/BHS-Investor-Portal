@@ -774,7 +774,7 @@
 
 import React, { useState, useEffect , useContext} from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "../ui/button";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 const NavBar = ({ isUser, setIsUser }) => {
