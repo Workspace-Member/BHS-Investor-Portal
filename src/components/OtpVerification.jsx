@@ -12,7 +12,12 @@ const OtpVerification = ({ onVerify, onResend, error, loading }) => {
   };
 
   return (
-    <div className="otp-container bg-[#392929] p-8 rounded-2xl shadow-lg">
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="otp-container bg-[#392929] p-8 rounded-2xl shadow-lg w-full max-w-md"
+    >
       <h3 className="text-2xl font-bold mb-6 text-center text-white">
         OTP Verification
       </h3>
@@ -52,7 +57,7 @@ const OtpVerification = ({ onVerify, onResend, error, loading }) => {
           Resend OTP
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

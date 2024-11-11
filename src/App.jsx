@@ -19,6 +19,7 @@ import GuidePage from "./components/Guide";
 import NavBar from "./components/NavBar";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import VerifyOtp from "./components/VerifyOtp";
 
 const App = () => {
   return (
@@ -39,7 +40,7 @@ const App = () => {
 
             {/* Login Route */}
             <Route path="/login" element={<Login />} />
-
+            <Route path="/verify-otp" element={<VerifyOtp />} />
             {/* Signup Route */}
             <Route path="/signup" element={<Signup />} />
 
@@ -143,14 +144,7 @@ const App = () => {
             />
 
             {/* Review Route */}
-            <Route
-              path="/review"
-              element={
-                <ProtectedRoute>
-                  <Review />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/review" element={<Review />} />
 
             {/* Catch-All Route - Redirect to Home */}
             <Route path="*" element={<Navigate to="/" />} />

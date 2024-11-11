@@ -68,7 +68,7 @@
 //                 >
 //                   Dashboard
 //                 </RouteLink>
-                
+
 //                 <RouteLink
 //                   to="/users"
 //                   className={`${buttonVariants({
@@ -384,7 +384,6 @@
 
 // export default NavBar;
 
-
 // import React, { useState, useEffect } from "react";
 // import { Link as RouteLink } from "react-router-dom";
 // import { buttonVariants } from "./ui/button";
@@ -455,7 +454,7 @@
 //                 >
 //                   Dashboard
 //                 </RouteLink>
-                
+
 //                 <RouteLink
 //                   to="/users"
 //                   className={`${buttonVariants({
@@ -771,8 +770,7 @@
 
 // export default NavBar;
 
-
-import React, { useState, useEffect , useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link as RouteLink } from "react-router-dom";
 import { buttonVariants } from "../ui/button";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
@@ -1079,7 +1077,6 @@ const NavBar = ({ isUser, setIsUser }) => {
                   >
                     Logout
                   </RouteLink>
-
                 </>
               ) : (
                 <>

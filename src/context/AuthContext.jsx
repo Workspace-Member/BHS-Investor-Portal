@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
 
+  // Set Axios default headers and localStorage when authToken changes
   useEffect(() => {
     if (authToken) {
       localStorage.setItem("authToken", authToken);
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [authToken]);
 
+  // Update localStorage when user changes
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -33,11 +35,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
+  // Login function to set authToken and user
   const login = (token, userData) => {
     setAuthToken(token);
     setUser(userData);
   };
 
+  // Logout function to clear authToken and user
   const logout = () => {
     setAuthToken(null);
     setUser(null);

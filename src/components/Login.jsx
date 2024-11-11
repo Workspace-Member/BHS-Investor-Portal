@@ -17,7 +17,6 @@ const Login = () => {
     password: "",
   });
   const [tempToken, setTempToken] = useState("");
-  const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,24 +29,23 @@ const Login = () => {
     });
   };
 
+  // Handle Login Form Submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
       const response = await axios.post(`${backendUrl}/users/login`, formData);
-      const { tempToken, userId: fetchedUserId, message } = response.data;
+      const { tempToken: fetchedTempToken, userId, message } = response.data;
 
       if (message) {
-        // For messages like profile not complete
         setError(message);
         setLoading(false);
         return;
       }
 
-      setTempToken(tempToken);
-      setUserId(fetchedUserId);
-      setStep(2);
+      setTempToken(fetchedTempToken);
+      setStep(2); // Proceed to OTP Verification step
     } catch (err) {
       setError(
         err.response?.data?.error || "Login failed. Please try again later."
@@ -57,13 +55,14 @@ const Login = () => {
     }
   };
 
+  // Handle OTP Verification
   const handleOtpVerify = async (otp) => {
     setError("");
     setLoading(true);
     try {
       const response = await axios.post(
         `${backendUrl}/users/login-verify-otp`,
-        { userId, otp },
+        { otp },
         {
           headers: {
             Authorization: `Bearer ${tempToken}`,
@@ -74,7 +73,6 @@ const Login = () => {
       const { token, user, message } = response.data;
 
       if (message) {
-        // Handle messages if any
         setError(message);
         setLoading(false);
         return;
@@ -85,21 +83,28 @@ const Login = () => {
       navigate("/dashboard");
     } catch (err) {
       setError(
-        err.response?.data?.error || "OTP verification failed. Please try again."
+        err.response?.data?.error ||
+          "OTP verification failed. Please try again."
       );
     } finally {
       setLoading(false);
     }
   };
 
+  // Handle Resending OTP
   const handleResendOtp = async () => {
     setError("");
     setLoading(true);
     try {
-      // Implement resend OTP functionality if your backend supports it
-      // For example, you might need to call a specific endpoint
-      // Here, we'll assume you can re-trigger the login to resend OTP
-      await handleLoginSubmit(new Event("resendOtp"));
+      const response = await axios.post(
+        `${backendUrl}/users/resend-otp`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${tempToken}`,
+          },
+        }
+      );
       alert("OTP has been resent to your email/phone.");
     } catch (err) {
       setError("Failed to resend OTP. Please try again later.");
@@ -143,6 +148,7 @@ const Login = () => {
               <h3 className="text-2xl font-bold mb-6 text-center text-white">
                 Investor's Login
               </h3>
+              {error && <p className="text-red-500 mb-4">{error}</p>}
               <form className="space-y-4" onSubmit={handleLoginSubmit}>
                 {/* Email Field */}
                 <div>
