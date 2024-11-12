@@ -1,7 +1,7 @@
 import React from 'react';
 import { Map, Phone, Mail, Download } from 'lucide-react';
 
-const ContactForm = () => {
+const Contact = () => {
   return (
     <div className="bg-[#322323] min-h-screen px-4 py-8 sm:py-16">
       {/* Feature Boxes */}
@@ -81,4 +81,4 @@ const FormButton = ({ type, value }) => (
   />
 );
 
-export default ContactForm;
+export default Contact;

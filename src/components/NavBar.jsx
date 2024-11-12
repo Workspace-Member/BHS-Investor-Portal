@@ -770,19 +770,374 @@
 
 // export default NavBar;
 
-import React, { useState, useEffect, useContext } from "react";
-import { Link as RouteLink } from "react-router-dom";
-import { buttonVariants } from "../ui/button";
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+// import React, { useState, useEffect, useContext } from "react";
+// import { Link as RouteLink } from "react-router-dom";
+// import { buttonVariants } from "../ui/button";
+// import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+// import { useAuth } from "../context/AuthContext"
 
-const NavBar = ({ isUser, setIsUser }) => {
+// const NavBar = ({ isUser, setIsUser }) => {
+
+//   const { user, logout } = useAuth();
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+//   const [showLogoutMessage, setShowLogoutMessage] = useState(false);
+
+//   const largeTextButtonStyle = "text-lg !important";
+
+//   const toggleDropdown = () => {
+//     setIsDropdownOpen(!isDropdownOpen);
+//   };
+
+//   const toggleMobileMenu = () => {
+//     setIsMobileMenuOpen(!isMobileMenuOpen);
+//   };
+
+//   const handleClick = () => {
+//     setIsDropdownOpen(false);
+//     setIsMobileMenuOpen(false);
+//     setIsUser(false);
+//     setShowLogoutMessage(true);
+//   };
+
+//   useEffect(() => {
+//     if (showLogoutMessage) {
+//       const timer = setTimeout(() => {
+//         setShowLogoutMessage(false);
+//       }, 3000);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [showLogoutMessage]);
+
+//   const LogoutMessage = () => (
+//     <div className="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-lg z-50">
+//       You have successfully logged out
+//     </div>
+//   );
+
+//   return (
+//     <>
+//       <nav className="sticky z-40 h-16 inset-x-0 top-0 w-full bg-[#201010] transition-all">
+//         <div className="flex items-center h-full px-4 justify-between w-full">
+//           <RouteLink to="/" className="flex z-40 font-semibold items-center">
+//             <img className="h-14" src="../public/logo_2.png" alt="Logo" />
+//           </RouteLink>
+//           <div className="lg:hidden">
+//             <button onClick={toggleMobileMenu} className="p-2 text-white">
+//               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+//             </button>
+//           </div>
+//           <div className="hidden lg:flex h-full items-center space-x-4 justify-end w-full">
+//             {isUser ? (
+//               <>
+//                 <RouteLink
+//                   to="/"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Dashboard
+//                 </RouteLink>
+
+//                 <RouteLink
+//                   to="/assets"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Assets
+//                 </RouteLink>
+
+//                 <RouteLink
+//                   to="/trips"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Trips
+//                 </RouteLink>
+
+//                 <RouteLink
+//                   to="/investments"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Investments
+//                 </RouteLink>
+
+//                 <RouteLink
+//                   to="/Guide"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Guide
+//                 </RouteLink>
+
+//                 <RouteLink
+//                   to="/contact"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Contact Us
+//                 </RouteLink>
+
+//                 <div className="h-8 w-px bg-[#6B5A5A] hidden sm:block" />
+
+//                 <div className="relative">
+//                   <button
+//                     onClick={toggleDropdown}
+//                     className={`${buttonVariants({
+//                       size: "lg",
+//                     })} hidden sm:flex items-center gap-1 bg-[#4A3A3A] ${largeTextButtonStyle} border border-[#6B5A5A] hover:border-[#FF9321] text-[#FF9321] active:border-[#FF9321]`}
+//                     style={{ fontSize: "1.125rem" }}
+//                   >
+//                     {user.username}
+//                     <ChevronDown
+//                       className={`ml-1 h-4 w-4 transition-transform ${
+//                         isDropdownOpen ? "rotate-180" : ""
+//                       }`}
+//                     />
+//                   </button>
+//                   {isDropdownOpen && (
+//                     <div className="absolute right-0 mt-2 w-48 rounded-md border border-[#FF9321] shadow-lg bg-[#201010] ring-1 ring-black ring-opacity-5">
+//                       <div
+//                         className="py-1"
+//                         role="menu"
+//                         aria-orientation="vertical"
+//                         aria-labelledby="options-menu"
+//                       >
+//                         <RouteLink
+//                           to="/profile"
+//                           className="block px-4 py-2 text-sm text-[#FF9321] hover:bg-[#2B1B1B] bg-[#201010] hover:text-[#FF9321]"
+//                           role="menuitem"
+//                           onClick={() => {
+//                             setIsDropdownOpen(false);
+//                           }}
+//                         >
+//                           Go to Profile
+//                         </RouteLink>
+//                         <RouteLink
+//                           to="/login"
+//                           className="block px-4 py-2 text-sm text-red-500 hover:bg-[#2B1B1B] bg-[#201010]"
+//                           role="menuitem"
+//                           onClick={handleClick}
+//                         >
+//                           Logout
+//                         </RouteLink>
+//                       </div>
+//                     </div>
+//                   )}
+//                 </div>
+//               </>
+//             ) : (
+//               <>
+//                 <RouteLink
+//                   to="/contact"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "ghost",
+//                   })} ${largeTextButtonStyle} border border-[#6B5A5A] hover:border-[#FF9321] text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Contact Us
+//                 </RouteLink>
+//                 <div className="h-8 w-px bg-[#6B5A5A] hidden sm:block" />
+//                 <RouteLink
+//                   to="/signup"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "outline",
+//                   })} ${largeTextButtonStyle} border-[#6B5A5A] text-[#201010] bg-[#FF9321] hover:bg-[#5A4A4A] hover:border-[#FF9321] hover:text-[#FF9321]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Sign up
+//                 </RouteLink>
+//                 <RouteLink
+//                   to="/login"
+//                   className={`${buttonVariants({
+//                     size: "sm",
+//                     variant: "default",
+//                   })} ${largeTextButtonStyle} border-[#6B5A5A] bg-[#5A4A4A] text-[#FF9321] hover:bg-[#FF9321] hover:text-[#201010]`}
+//                   style={{ fontSize: "1.125rem" }}
+//                 >
+//                   Login
+//                 </RouteLink>
+//               </>
+//             )}
+//           </div>
+//         </div>
+//         {/* Mobile Menu */}
+//         {/* Mobile Menu */}
+//         {isMobileMenuOpen && (
+//           <div className="lg:hidden bg-[#201010] w-full absolute top-16 left-0 border-b border-[#6B5A5A]">
+//             <div className="flex flex-col p-4 space-y-2">
+//               {isUser ? (
+//                 <>
+//                   <RouteLink
+//                     to="/"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Dashboard
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/assets"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Assets
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/trips"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Trips
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/investments"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Investments
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/guide"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Guide
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/contact"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Contact Us
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/profile"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Go to Profile
+//                   </RouteLink>
+
+//                   <RouteLink
+//                     to="/login"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-red-500`}
+//                     role="menuitem"
+//                     onClick={handleClick}
+//                   >
+//                     Logout
+//                   </RouteLink>
+//                 </>
+//               ) : (
+//                 <>
+//                   <RouteLink
+//                     to="/contact"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "ghost",
+//                     })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Contact Us
+//                   </RouteLink>
+//                   <RouteLink
+//                     to="/signup"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "outline",
+//                     })} ${largeTextButtonStyle} border-[#6B5A5A] text-[#201010] bg-[#FF9321] hover:bg-[#5A4A4A] w-full`}
+//                     onClick={() => setIsMobileMenuOpen(false)}
+//                   >
+//                     Sign up
+//                   </RouteLink>
+//                   <RouteLink
+//                     to="/login"
+//                     className={`${buttonVariants({
+//                       size: "sm",
+//                       variant: "default",
+//                     })} ${largeTextButtonStyle} border-[#6B5A5A] bg-[#5A4A4A] text-[#FF9321] hover:bg-[#FF9321] hover:text-[#201010] w-full`}
+//                     onClick={handleClick}
+//                   >
+//                     Login
+//                   </RouteLink>
+//                 </>
+//               )}
+//             </div>
+//           </div>
+//         )}
+//       </nav>
+//       {showLogoutMessage && <LogoutMessage />}
+//     </>
+//   );
+// };
+
+// export default NavBar;
+
+// src/components/NavBar.jsx
+
+import React, { useContext, useState, useEffect } from "react";
+import { Link as RouteLink, useNavigate } from "react-router-dom";
+import { buttonVariants } from "../ui/button";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { useAuth } from "../context/AuthContext"; // Correct named import
+import { AuthContext } from "../context/AuthContext";
+
+const NavBar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLogoutMessage, setShowLogoutMessage] = useState(false);
-  const user = {
-    username: "John Doe",
-    avatar: "user.jpg",
-  };
 
   const largeTextButtonStyle = "text-lg !important";
 
@@ -799,6 +1154,14 @@ const NavBar = ({ isUser, setIsUser }) => {
     setIsMobileMenuOpen(false);
     setIsUser(false);
     setShowLogoutMessage(true);
+  };
+
+  const handleLogout = () => {
+    setIsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+    logout();
+    setShowLogoutMessage(true);
+    navigate("/login"); // Navigate to login after logout
   };
 
   useEffect(() => {
@@ -821,7 +1184,7 @@ const NavBar = ({ isUser, setIsUser }) => {
       <nav className="sticky z-40 h-16 inset-x-0 top-0 w-full bg-[#201010] transition-all">
         <div className="flex items-center h-full px-4 justify-between w-full">
           <RouteLink to="/" className="flex z-40 font-semibold items-center">
-            <img className="h-14" src="../public/logo_2.png" alt="Logo" />
+            <img className="h-14" src="/logo_2.png" alt="Logo" /> {/* Adjusted path */}
           </RouteLink>
           <div className="lg:hidden">
             <button onClick={toggleMobileMenu} className="p-2 text-white">
@@ -829,85 +1192,62 @@ const NavBar = ({ isUser, setIsUser }) => {
             </button>
           </div>
           <div className="hidden lg:flex h-full items-center space-x-4 justify-end w-full">
-            {isUser ? (
+            {user ? (
               <>
-                <RouteLink
-                  to="/"
-                  className={`${buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+
+                  <RouteLink
+                  to="/dashboard"
+                  className={`text-lg border border-[#201010] hover:border-[#FF9321] text-[#FF9321] px-3 py-2 rounded-md`}
                 >
                   Dashboard
                 </RouteLink>
 
                 <RouteLink
                   to="/assets"
-                  className={`${buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  className={`text-lg border border-[#201010] hover:border-[#FF9321] text-[#FF9321] px-3 py-2 rounded-md`}
                 >
                   Assets
                 </RouteLink>
 
                 <RouteLink
                   to="/trips"
-                  className={`${buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  className={`text-lg border border-[#201010] hover:border-[#FF9321] text-[#FF9321] px-3 py-2 rounded-md`}
                 >
                   Trips
                 </RouteLink>
 
+                {/* Trips Link */}
                 <RouteLink
                   to="/investments"
-                  className={`${buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  className={`text-lg border border-[#201010] hover:border-[#FF9321] text-[#FF9321] px-3 py-2 rounded-md`}
                 >
                   Investments
                 </RouteLink>
 
+                {/* Assets Link */}
                 <RouteLink
-                  to="/Guide"
-                  className={`${buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  to="/guide"
+                  className={`text-lg border border-[#201010] hover:border-[#FF9321] text-[#FF9321] px-3 py-2 rounded-md`}
                 >
                   Guide
                 </RouteLink>
-
                 <RouteLink
                   to="/contact"
-                  className={`${buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#201010] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  className={`text-lg border border-[#201010] hover:border-[#FF9321] text-[#FF9321] px-3 py-2 rounded-md`}
                 >
                   Contact Us
                 </RouteLink>
 
-                <div className="h-8 w-px bg-[#6B5A5A] hidden sm:block" />
 
+                <div className="h-8 w-px bg-[#6B5A5A] hidden sm:block" />
                 <div className="relative">
                   <button
                     onClick={toggleDropdown}
                     className={`${buttonVariants({
                       size: "lg",
-                    })} hidden sm:flex items-center gap-1 bg-[#4A3A3A] ${largeTextButtonStyle} border border-[#6B5A5A] hover:border-[#FF9321] text-[#FF9321] active:border-[#FF9321]`}
-                    style={{ fontSize: "1.125rem" }}
+                    })} hidden sm:flex items-center gap-1 bg-[#4A3A3A] ${largeTextButtonStyle} text-[#FF9321]`}
                   >
-                    {user.username}
+                    {user.username} {/* Ensure 'username' exists */}
                     <ChevronDown
                       className={`ml-1 h-4 w-4 transition-transform ${
                         isDropdownOpen ? "rotate-180" : ""
@@ -915,31 +1255,21 @@ const NavBar = ({ isUser, setIsUser }) => {
                     />
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 rounded-md border border-[#FF9321] shadow-lg bg-[#201010] ring-1 ring-black ring-opacity-5">
-                      <div
-                        className="py-1"
-                        role="menu"
-                        aria-orientation="vertical"
-                        aria-labelledby="options-menu"
-                      >
+                    <div className="absolute right-0 mt-2 w-48 rounded-md border border-[#FF9321] shadow-lg bg-[#201010]">
+                      <div className="py-1" role="menu">
                         <RouteLink
                           to="/profile"
-                          className="block px-4 py-2 text-sm text-[#FF9321] hover:bg-[#2B1B1B] bg-[#201010] hover:text-[#FF9321]"
-                          role="menuitem"
-                          onClick={() => {
-                            setIsDropdownOpen(false);
-                          }}
+                          className="block px-4 py-2 text-sm text-[#FF9321] hover:bg-[#2B1B1B]"
+                          onClick={() => setIsDropdownOpen(false)}
                         >
                           Go to Profile
                         </RouteLink>
-                        <RouteLink
-                          to="/login"
-                          className="block px-4 py-2 text-sm text-red-500 hover:bg-[#2B1B1B] bg-[#201010]"
-                          role="menuitem"
-                          onClick={handleClick}
+                        <button
+                          className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-[#2B1B1B]"
+                          onClick={handleLogout}
                         >
                           Logout
-                        </RouteLink>
+                        </button>
                       </div>
                     </div>
                   )}
@@ -947,13 +1277,13 @@ const NavBar = ({ isUser, setIsUser }) => {
               </>
             ) : (
               <>
+                {/* Links for Guests */}
                 <RouteLink
                   to="/contact"
                   className={`${buttonVariants({
                     size: "sm",
                     variant: "ghost",
-                  })} ${largeTextButtonStyle} border border-[#6B5A5A] hover:border-[#FF9321] text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  })} ${largeTextButtonStyle} text-[#FF9321]`}
                 >
                   Contact Us
                 </RouteLink>
@@ -963,8 +1293,7 @@ const NavBar = ({ isUser, setIsUser }) => {
                   className={`${buttonVariants({
                     size: "sm",
                     variant: "outline",
-                  })} ${largeTextButtonStyle} border-[#6B5A5A] text-[#201010] bg-[#FF9321] hover:bg-[#5A4A4A] hover:border-[#FF9321] hover:text-[#FF9321]`}
-                  style={{ fontSize: "1.125rem" }}
+                  })} ${largeTextButtonStyle} text-[#201010] bg-[#FF9321]`}
                 >
                   Sign up
                 </RouteLink>
@@ -973,8 +1302,7 @@ const NavBar = ({ isUser, setIsUser }) => {
                   className={`${buttonVariants({
                     size: "sm",
                     variant: "default",
-                  })} ${largeTextButtonStyle} border-[#6B5A5A] bg-[#5A4A4A] text-[#FF9321] hover:bg-[#FF9321] hover:text-[#201010]`}
-                  style={{ fontSize: "1.125rem" }}
+                  })} ${largeTextButtonStyle} text-[#FF9321] bg-[#5A4A4A]`}
                 >
                   Login
                 </RouteLink>
@@ -983,109 +1311,45 @@ const NavBar = ({ isUser, setIsUser }) => {
           </div>
         </div>
         {/* Mobile Menu */}
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-[#201010] w-full absolute top-16 left-0 border-b border-[#6B5A5A]">
             <div className="flex flex-col p-4 space-y-2">
-              {isUser ? (
+              {user ? (
                 <>
+                  {/* Mobile Links for Logged-in Users */}
                   <RouteLink
-                    to="/"
+                    to="/dashboard"
                     className={`${buttonVariants({
                       size: "sm",
                       variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+                    })} ${largeTextButtonStyle} text-[#FF9321]`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Dashboard
                   </RouteLink>
-
-                  <RouteLink
-                    to="/assets"
+                  {/* Add more authenticated mobile links as needed */}
+                  <button
                     className={`${buttonVariants({
                       size: "sm",
                       variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Assets
-                  </RouteLink>
-
-                  <RouteLink
-                    to="/trips"
-                    className={`${buttonVariants({
-                      size: "sm",
-                      variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Trips
-                  </RouteLink>
-
-                  <RouteLink
-                    to="/investments"
-                    className={`${buttonVariants({
-                      size: "sm",
-                      variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Investments
-                  </RouteLink>
-
-                  <RouteLink
-                    to="/guide"
-                    className={`${buttonVariants({
-                      size: "sm",
-                      variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Guide
-                  </RouteLink>
-
-                  <RouteLink
-                    to="/contact"
-                    className={`${buttonVariants({
-                      size: "sm",
-                      variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Contact Us
-                  </RouteLink>
-
-                  <RouteLink
-                    to="/profile"
-                    className={`${buttonVariants({
-                      size: "sm",
-                      variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Go to Profile
-                  </RouteLink>
-
-                  <RouteLink
-                    to="/login"
-                    className={`${buttonVariants({
-                      size: "sm",
-                      variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-red-500`}
-                    role="menuitem"
-                    onClick={handleClick}
+                    })} ${largeTextButtonStyle} text-red-500`}
+                    onClick={() => {
+                      handleLogout();
+                      setIsMobileMenuOpen(false);
+                    }}
                   >
                     Logout
-                  </RouteLink>
+                  </button>
                 </>
               ) : (
                 <>
+                  {/* Mobile Links for Guests */}
                   <RouteLink
                     to="/contact"
                     className={`${buttonVariants({
                       size: "sm",
                       variant: "ghost",
-                    })} ${largeTextButtonStyle} w-full text-left text-[#FF9321]`}
+                    })} ${largeTextButtonStyle} text-[#FF9321]`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Contact Us
@@ -1095,7 +1359,7 @@ const NavBar = ({ isUser, setIsUser }) => {
                     className={`${buttonVariants({
                       size: "sm",
                       variant: "outline",
-                    })} ${largeTextButtonStyle} border-[#6B5A5A] text-[#201010] bg-[#FF9321] hover:bg-[#5A4A4A] w-full`}
+                    })} ${largeTextButtonStyle} text-[#201010] bg-[#FF9321]`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign up
@@ -1105,8 +1369,8 @@ const NavBar = ({ isUser, setIsUser }) => {
                     className={`${buttonVariants({
                       size: "sm",
                       variant: "default",
-                    })} ${largeTextButtonStyle} border-[#6B5A5A] bg-[#5A4A4A] text-[#FF9321] hover:bg-[#FF9321] hover:text-[#201010] w-full`}
-                    onClick={handleClick}
+                    })} ${largeTextButtonStyle} text-[#FF9321] bg-[#5A4A4A]`}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Login
                   </RouteLink>

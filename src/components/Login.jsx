@@ -30,32 +30,95 @@ const Login = () => {
   };
 
   // Handle Login Form Submission
+  // const handleLoginSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.post(`${backendUrl}/users/login`, formData);
+  //     const { tempToken: fetchedTempToken, userId, message } = response.data;
+
+  //     if (message) {
+  //       setError(message);
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     setTempToken(fetchedTempToken);
+  //     setStep(2); // Proceed to OTP Verification step
+  //   } catch (err) {
+  //     setError(
+  //       err.response?.data?.error || "Login failed. Please try again later."
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
   const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const response = await axios.post(`${backendUrl}/users/login`, formData);
-      const { tempToken: fetchedTempToken, userId, message } = response.data;
+  e.preventDefault();
+  setError("");
+  setLoading(true);
+  try {
+    const response = await axios.post(`${backendUrl}/users/login`, formData);
+    const { tempToken: fetchedTempToken, userId, error } = response.data;
 
-      if (message) {
-        setError(message);
-        setLoading(false);
-        return;
-      }
-
-      setTempToken(fetchedTempToken);
-      setStep(2); // Proceed to OTP Verification step
-    } catch (err) {
-      setError(
-        err.response?.data?.error || "Login failed. Please try again later."
-      );
-    } finally {
-      setLoading(false);
+    if (error) {
+      setError(error);
+      return;
     }
-  };
 
-  // Handle OTP Verification
+    setTempToken(fetchedTempToken);
+    setStep(2); // Proceed to OTP Verification step
+  } catch (err) {
+    const errorMessage =
+      err.response?.data?.error ||
+      err.response?.data?.message ||
+      err.message ||
+      "Login failed. Please try again later.";
+    setError(errorMessage);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // // Handle OTP Verification
+  // const handleOtpVerify = async (otp) => {
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.post(
+  //       `${backendUrl}/users/login-verify-otp`,
+  //       { otp },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${tempToken}`,
+  //         },
+  //       }
+  //     );
+
+  //     const { token, user, message } = response.data;
+
+  //     if (message) {
+  //       setError(message);
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     // Log the user in
+  //     login(token, user);
+  //     navigate("/dashboard");
+  //   } catch (err) {
+  //     setError(
+  //       err.response?.data?.error ||
+  //         "OTP verification failed. Please try again."
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleOtpVerify = async (otp) => {
     setError("");
     setLoading(true);
@@ -69,27 +132,32 @@ const Login = () => {
           },
         }
       );
-
-      const { token, user, message } = response.data;
-
-      if (message) {
-        setError(message);
-        setLoading(false);
+      console.log(response)
+      const { token, user, error } = response.data;
+      console.log("response", response)
+      console.log("token", token)
+      console.log("user", user)
+      console.log("error", error)
+  
+      if (error) {
+        setError(error);
         return;
       }
-
       // Log the user in
       login(token, user);
       navigate("/dashboard");
     } catch (err) {
-      setError(
+      const errorMessage =
         err.response?.data?.error ||
-          "OTP verification failed. Please try again."
-      );
+        err.response?.data?.message ||
+        err.message ||
+        "OTP verification failed. Please try again.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
+  
 
   // Handle Resending OTP
   const handleResendOtp = async () => {

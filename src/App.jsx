@@ -14,12 +14,13 @@ import Investment from "./components/Investment";
 import Investments from "./components/Investments";
 import Trips from "./components/Trips";
 import Dashboard from "./components/Dashboard";
-//import ContactForm from "./components/ContactForm";
+import Contact from "./components/Contact";
 import GuidePage from "./components/Guide";
 import NavBar from "./components/NavBar";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyOtp from "./components/VerifyOtp";
+// import { Contact } from "lucide-react";
 
 const App = () => {
   return (
@@ -124,14 +125,14 @@ const App = () => {
             />
 
             {/* Contact Form Route */}
-            {/* <Route
+            <Route
               path="/contact"
               element={
                 <ProtectedRoute>
-                  <ContactForm />
+                  <Contact/>
                 </ProtectedRoute>
               }
-            /> */}
+            />
 
             {/* Guide Page Route */}
             <Route
@@ -142,6 +143,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            
 
             {/* Review Route */}
             <Route path="/review" element={<Review />} />
