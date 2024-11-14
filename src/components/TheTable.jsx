@@ -1,4 +1,4 @@
-// src/components/TheTable.jsx
+// src/components/AssetsTable.jsx
 
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,8 @@ const TheTable = ({ row, col, link, clickable = false, onRowClick }) => {
     if (onRowClick) {
       onRowClick(item);
     } else if (clickable && link) {
-      navigate(link, { state: { itemData: item } });
+      // Navigate to the detail page using the asset ID
+      navigate(`${link}${item.id}`);
     }
   };
 
@@ -81,7 +82,7 @@ const TheTable = ({ row, col, link, clickable = false, onRowClick }) => {
               </th>
             ))}
             {(clickable || onRowClick) && (
-              <th className="w-2 text-black">Action</th>
+              <th className="w-2 text-black">|</th>
             )}
           </tr>
         </thead>
@@ -99,22 +100,29 @@ const TheTable = ({ row, col, link, clickable = false, onRowClick }) => {
               }`}
               onClick={() => handleRowClick(r)}
             >
-              {Object.entries(r).map(([key, value], idx) => (
-                <td
-                  key={idx}
-                  className={`min-w-32 text-center py-4 ${
-                    key === "ValueAdded"
-                      ? typeof value === "number"
-                        ? value > 0
-                          ? "text-green-600 font-semibold"
-                          : "text-red-600 font-semibold"
+              {col.map((column, idx) => {
+                // Map column headers to data keys
+                // Assuming column names are exactly the keys in data
+                // Adjust if needed
+                const key = column.replace(/\s+/g, ""); // Remove spaces to match keys like "NumberPlate"
+                const value = r[key];
+                return (
+                  <td
+                    key={idx}
+                    className={`min-w-32 text-center py-4 ${
+                      key === "ValueAdded"
+                        ? typeof value === "number"
+                          ? value > 0
+                            ? "text-green-600 font-semibold"
+                            : "text-red-600 font-semibold"
+                          : "text-white"
                         : "text-white"
-                      : "text-white"
-                  }`}
-                >
-                  {key === "ValueAdded" ? formatValueAdded(value) : value}
-                </td>
-              ))}
+                    }`}
+                  >
+                    {key === "ValueAdded" ? formatValueAdded(value) : value}
+                  </td>
+                );
+              })}
               {(clickable || onRowClick) && (
                 <td className="w-10 py-4 whitespace-nowrap text-right">
                   <ChevronRight

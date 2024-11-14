@@ -1245,9 +1245,11 @@ const NavBar = () => {
                     onClick={toggleDropdown}
                     className={`${buttonVariants({
                       size: "lg",
-                    })} hidden sm:flex items-center gap-1 bg-[#4A3A3A] ${largeTextButtonStyle} text-[#FF9321]`}
+                    })} border border-white hidden sm:flex items-center gap-1 bg-[#4A3A3A] ${largeTextButtonStyle} text-[#FF9321] hover:border-[#FF9321]`}
                   >
-                    {user.username} {/* Ensure 'username' exists */}
+                    <span className="text-base">
+                    {user.name} {/* Ensure 'username' exists */}
+                    </span>
                     <ChevronDown
                       className={`ml-1 h-4 w-4 transition-transform ${
                         isDropdownOpen ? "rotate-180" : ""

@@ -1,44 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import StatsTable from "./StatsTable";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import LogTable from "./LogTable";
 
-const Investment = () => {
-  // const [user, setUser] = useState({});
-  // const [data, setData] = useState([]);
-  // const backendUrl = "https://bhsxw.onrender.com"; // Backend URL
-  // const navigate = useNavigate();
+import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../api/axios";
+import TripsTable from "./TripsTable";
+import TheTable from "./TheTable";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext"; // Import useAuth for user context
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authToken");
-  //   if (!token) {
-  //     // Redirect to login if no token is present
-  //     navigate("/login");
-  //     return;
-  //   }
+const Dashboard = () => {
 
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await axios.get(`${backendUrl}/users/me`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       setUser(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching user data:", error);
-  //       if (error.response && error.response.status === 401) {
-  //         // Redirect to login if unauthorized
-  //         navigate("/login");
-  //       }
-  //     }
-  //   };
+  const { id } = useParams();
+  console.log("id", id)
+  const { user, token } = useAuth(); // Get user and token from AuthContext
+  const navigate = useNavigate();
 
-  //   fetchUserData();
-  // }, [backendUrl, navigate]);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const col = ["To", "From", "Start Date", "End Date"];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get(`/user/dashboard/stats`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setData(response.data);
+        console.log("data: ", response.data)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to fetch data details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id, token]);
+
+  console.log("Data: ", user)
+
 
   const statscol = ["Time", "Truck", "Location", "Speed", "Trip Number"]
 
@@ -71,14 +76,13 @@ const Investment = () => {
 
     setData(generateRandomData());
   }, []);
-  const user = {
-    name: "John Doe",
-    _id: "I75646",
-    initialInvestmentValue: "311M",
-    assets: "12",
+  // const user = {
+  //   name: "John Doe",
+  //   _id: "I75646",
+  //   initialInvestmentValue: "311M",
+  //   assets: "12",
 
-
-  };
+  // };
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.addImage("/path-to-chart.png", "PNG", 10, 10, 190, 120);
@@ -86,7 +90,7 @@ const Investment = () => {
     doc.text("Investment Dashboard", 20, 150);
     doc.setFontSize(12);
     doc.text(user.name || "User", 20, 170);
-    doc.text(`Investment ID: ${user._id || "N/A"}`, 20, 180);
+    doc.text(`Investor ID: ${user.userId || "N/A"}`, 20, 180);
     doc.save("investment-dashboard.pdf");
   };
 
@@ -111,66 +115,53 @@ const Investment = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Profile Section */}
         <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#FF9321]">
+          <h2 className="text-3xl sm:text-3xl font-bold text-[#FF9321]">
             Hello, {user.name || "Investor"}
           </h2>
           <p className="text-base sm:text-lg text-white">
-            Investor ID: {user._id || "N/A"}
+            Investor ID: {user.userId || "N/A"}
           </p>
         </div>
 
         <main>
           {/* First row of cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card
-              title="Investment Value"
-              value={`AED ${user.initialInvestmentValue || "1.80M"}`}
+          <div className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <Card
+              title="Investments' Value"
+              value={`AED ${data.totalInvestedAmount || "1.80M"}`}
               subtext=""
               subtextColor="text-white"
               textColor="text-white"
             />
             <Card
+              title="No. of Investments"
+              // value={`${user.initialInvestmentValue || "3"}`}
+              value={`${data.numberOfInvestments}`}
+              subtext=""
+              subtextColor="text-white"
+              textColor="text-white"
+            />
+
+          {/* </div> */}
+          {/* Second row of cards */}
+          {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"> */}
+            
+          <Card
               title="No. of Assets"
-              value={user.assets ? user.assets.length : "12"} // Example static value
+              value={`${data.numberOfAssets}`} // Example static value
               subtext=""
               subtextColor="text-"
               textColor="text-white"
-            />
-            <Card
-              title="Ticket size"
-              value="AED 150K" // Example static value
-              subtext=""
-              subtextColor="text-white"
-              textColor="text-white"
-            />
-          </div>
-
-          {/* Second row of cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card
-              title="Current Investment Value*"
-              value="AED 2.11M"
-              subtext=""
-              subtextColor="text-white"
-              textColor="text-white"
-            />
-            <Card
-              title="Agreed ROI PA"
-              value="10%"
-              subtext=""
-              subtextColor="text-gray-500"
-              textColor="text-white"
-            />
-            <Card
+            /><Card
               title="No. of Trips"
-              value="108"
+              value={`${data.numberOfTrips}`}
               subtext=""
               subtextColor="text-white"
               textColor="text-white"
             />
           </div>
 
-          <h1 className="text-4xl font-bold mt-3 mb-2 text-[#FF9321]">Latest Updates</h1>
+          <h1 className="text-3xl font-bold mt-3 mb-2 text-[#FF9321]">Latest Updates</h1>
           <LogTable row={logrow} col={statscol}/>
           <p className="text-white">*Terms and Conditions Apply</p>
         </main>
@@ -206,4 +197,4 @@ const DownloadButton = ({ onClick }) => (
   </button>
 );
 
-export default Investment;
+export default Dashboard;

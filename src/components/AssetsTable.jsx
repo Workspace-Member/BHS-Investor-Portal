@@ -1,160 +1,28 @@
-// import React, { useRef, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { ChevronRight } from "lucide-react";
+// src/components/AssetsTable.jsx
 
-// const AssetsTable = ({ row, col, clickable = false }) => {
-//   const navigate = useNavigate();
-//   const tableBodyRef = useRef(null);
-//   const tableHeaderRef = useRef(null);
-
-//   const handleRowClick = (item) => {
-//     if (clickable) {
-//       navigate("/asset", { state: { assetData: item } });
-//     }
-//   };
-
-//   const formatValueAdded = (value) => {
-//     if (value > 0) {
-//       return `+${value}`;
-//     }
-//     return value;
-//   };
-
-//   useEffect(() => {
-//     const handleBodyScroll = () => {
-//       if (tableHeaderRef.current && tableBodyRef.current) {
-//         tableHeaderRef.current.scrollLeft = tableBodyRef.current.scrollLeft;
-//       }
-//     };
-
-//     const handleHeaderScroll = () => {
-//       if (tableHeaderRef.current && tableBodyRef.current) {
-//         tableBodyRef.current.scrollLeft = tableHeaderRef.current.scrollLeft;
-//       }
-//     };
-
-//     const tableBody = tableBodyRef.current;
-//     const tableHeader = tableHeaderRef.current;
-
-//     if (tableBody) {
-//       tableBody.addEventListener("scroll", handleBodyScroll);
-//     }
-
-//     if (tableHeader) {
-//       tableHeader.addEventListener("scroll", handleHeaderScroll);
-//     }
-
-//     return () => {
-//       if (tableBody) {
-//         tableBody.removeEventListener("scroll", handleBodyScroll);
-//       }
-//       if (tableHeader) {
-//         tableHeader.removeEventListener("scroll", handleHeaderScroll);
-//       }
-//     };
-//   }, []);
-
-//   const renderTableContent = (isHeader = false) => (
-//     <table className="w-full text-sm">
-//       {isHeader ? (
-//         <thead className="bg-gray-800 text-white">
-//           <tr>
-//             {col.slice(0, 6).map((item, index) => (  // Only take first 6 columns
-//               <th
-//                 key={index}
-//                 className="px-6 min-w-32 py-4 font-semibold text-center"
-//               >
-//                 {item}
-//               </th>
-//             ))}
-//             {clickable && (
-//               <td className="w-10 py-4 whitespace-nowrap text-right">
-//                 <ChevronRight className="inline-bloc text-gray-800" size={20} />
-//               </td>
-//             )}
-//           </tr>
-//         </thead>
-//       ) : (
-//         <tbody>
-//           {row.map((r, index) => (
-//             <tr
-//               key={index}
-//               className={`border-b transition-colors duration-200 ${
-//                 index % 2 === 0 ? "bg-white" : "bg-gray-50"
-//               } ${clickable ? "cursor-pointer hover:bg-gray-200" : ""}`}
-//               onClick={() => handleRowClick(r)}
-//             >
-//               {Object.entries(r)
-//                 .slice(0, 6)  // Only take first 6 fields
-//                 .map(([key, value], idx) => (
-//                   <td
-//                     key={idx}
-//                     className={`min-w-32 text-center py-4 ${
-//                       key === "ValueAdded"
-//                         ? value > 0
-//                           ? "text-green-600 font-semibold"
-//                           : "text-red-600 font-semibold"
-//                         : "text-gray-700"
-//                     }`}
-//                   >
-//                     {key === "ValueAdded" ? formatValueAdded(value) : value}
-//                   </td>
-//                 ))}
-//               {clickable && (
-//                 <td className="w-10 py-4 whitespace-nowrap text-right">
-//                   <ChevronRight
-//                     className="inline-block text-gray-400"
-//                     size={20}
-//                   />
-//                 </td>
-//               )}
-//             </tr>
-//           ))}
-//         </tbody>
-//       )}
-//     </table>
-//   );
-
-//   return (
-//     <div className="container mx-auto px-4 py-8 w-5/6 max-h-[80vh]">
-//       <div className="bg-white shadow-2xl rounded-lg overflow-hidden border border-gray-200 transform perspective-1000 ">
-//         <div
-//           className="overflow-x-auto invisible-scrollbar relative z-10 bg-gray-800"
-//           ref={tableHeaderRef}
-//         >
-//           {renderTableContent(true)}
-//         </div>
-//         <div
-//           className="max-h-[60vh] overflow-y-auto overflow-x-auto custom-scrollbar relative"
-//           ref={tableBodyRef}
-//         >
-//           {renderTableContent()}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AssetsTable;
-
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
-const AssetsTable = ({ row, col, clickable = false }) => {
+const AssetsTable = ({ row, col, link, clickable = false, onRowClick }) => {
   const navigate = useNavigate();
   const tableBodyRef = useRef(null);
   const tableHeaderRef = useRef(null);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleRowClick = (item) => {
-    if (clickable) {
-      navigate("/asset", { state: { assetData: item } });
+    if (onRowClick) {
+      onRowClick(item);
+    } else if (clickable && link) {
+      // Navigate to the detail page using the asset ID
+      navigate(`${link}${item.id}`);
     }
   };
 
   const formatValueAdded = (value) => {
-    if (value > 0) {
-      return `+${value}`;
+    if (typeof value === "number") {
+      return value > 0 ? `+${value}` : value;
     }
     return value;
   };
@@ -193,53 +61,69 @@ const AssetsTable = ({ row, col, clickable = false }) => {
     };
   }, []);
 
+  // Filter rows based on the search term
+  const filteredRows = row.filter((r) =>
+    Object.values(r).some((value) =>
+      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
   const renderTableContent = (isHeader = false) => (
     <table className="w-full text-sm">
       {isHeader ? (
-        <thead className="bg-gray-800 text-white">
+        <thead className="bg-[#201010] text-[#FF9321]">
           <tr>
-            {col.slice(0, 6).map((item, index) => (
+            {col.map((item, index) => (
               <th
                 key={index}
-                className="px-6 py-4 font-semibold text-center min-w-32" // Use same class for alignment
+                className="px-6 min-w-32 py-4 font-semibold text-center"
               >
                 {item}
               </th>
             ))}
-            {clickable && (
-              <td className="w-10 py-4 whitespace-nowrap text-right">
-                <ChevronRight className="inline-block text-gray-800" size={20} />
-              </td>
+            {(clickable || onRowClick) && (
+              <th className="w-2 text-black">|</th>
             )}
           </tr>
         </thead>
       ) : (
         <tbody>
-          {row.map((r, index) => (
+          {filteredRows.map((r, index) => (
             <tr
               key={index}
-              className={`border-b transition-colors duration-200 ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-50"
-              } ${clickable ? "cursor-pointer hover:bg-gray-200" : ""}`}
+              className={`border-b transition-colors border-[#6B5A5A] duration-200 ${
+                index % 2 === 0 ? "bg-[#4B3F3F]" : "bg-[#5A4A4A]"
+              } ${
+                clickable || onRowClick
+                  ? "cursor-pointer hover:bg-[#707070]"
+                  : ""
+              }`}
               onClick={() => handleRowClick(r)}
             >
-              {Object.entries(r)
-                .slice(0, 6) // Only take first 6 fields
-                .map(([key, value], idx) => (
+              {col.map((column, idx) => {
+                // Map column headers to data keys
+                // Assuming column names are exactly the keys in data
+                // Adjust if needed
+                const key = column.replace(/\s+/g, ""); // Remove spaces to match keys like "NumberPlate"
+                const value = r[key];
+                return (
                   <td
                     key={idx}
                     className={`min-w-32 text-center py-4 ${
                       key === "ValueAdded"
-                        ? value > 0
-                          ? "text-green-600 font-semibold"
-                          : "text-red-600 font-semibold"
-                        : "text-gray-700"
+                        ? typeof value === "number"
+                          ? value > 0
+                            ? "text-green-600 font-semibold"
+                            : "text-red-600 font-semibold"
+                          : "text-white"
+                        : "text-white"
                     }`}
                   >
                     {key === "ValueAdded" ? formatValueAdded(value) : value}
                   </td>
-                ))}
-              {clickable && (
+                );
+              })}
+              {(clickable || onRowClick) && (
                 <td className="w-10 py-4 whitespace-nowrap text-right">
                   <ChevronRight
                     className="inline-block text-gray-400"
@@ -255,8 +139,17 @@ const AssetsTable = ({ row, col, clickable = false }) => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8 w-5/6 max-h-[80vh]">
-      <div className="bg-white shadow-2xl rounded-lg overflow-hidden border border-gray-200 transform perspective-1000 ">
+    <div className="container mx-auto px-4 py-8 w-full max-h-[80vh]">
+      <div className="flex justify-start mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search..."
+          className="p-2 border border-gray-300 rounded-md w-1/3 bg-gray-100"
+        />
+      </div>
+      <div className="shadow-2xl rounded-lg overflow-hidden border-b border-[#656565] transform perspective-1000">
         <div
           className="overflow-x-auto invisible-scrollbar relative z-10 bg-gray-800"
           ref={tableHeaderRef}

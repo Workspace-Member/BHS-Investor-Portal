@@ -236,13 +236,12 @@ const Assets = () => {
   const [ assets, setAssets ] = useState([]);
 
   const col = [
-    "SNo",
-    "Number Plate",
+    "S No",
     "Investment ID",
+    "Number Plate",
     "Type",
     "Brand",
     "Model",
-    "Investor",
   ];
 
   useEffect(() => {
@@ -266,7 +265,6 @@ const Assets = () => {
     Type: asset.Type,
     Brand: asset.Brand,
     Model: asset.Model,
-    Investor: asset.investment.investor.name,
   }));
 
   return (
@@ -278,7 +276,7 @@ const Assets = () => {
             row={data}
             col={col}
             small={false}
-            link={"../asset/"}
+            link="/asset/"
             clickable={true}
           />
         </div>
