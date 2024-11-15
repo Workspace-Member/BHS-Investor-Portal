@@ -216,6 +216,8 @@ const Asset = () => {
 
     fetchAsset();
   }, [id, token]);
+  
+  console.log(asset)
 
   // Function to safely get nested values
   const getNestedValue = (obj, key) => {

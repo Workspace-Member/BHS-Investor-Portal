@@ -8,23 +8,23 @@ export const AuthContext = createContext();
 
 // Auth Provider Component
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(
-    localStorage.getItem("authToken") || null
+  const [token, setToken] = useState(
+    localStorage.getItem("token") || null
   );
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
 
-  // Set Axios default headers and localStorage when authToken changes
+  // Set Axios default headers and localStorage when token changes
   useEffect(() => {
-    if (authToken) {
-      localStorage.setItem("authToken", authToken);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+    if (token) {
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
     }
-  }, [authToken]);
+  }, [token]);
 
   // Update localStorage when user changes
   useEffect(() => {
@@ -35,20 +35,20 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Login function to set authToken and user
+  // Login function to set token and user
   const login = (token, userData) => {
-    setAuthToken(token);
+    setToken(token);
     setUser(userData);
   };
 
-  // Logout function to clear authToken and user
+  // Logout function to clear token and user
   const logout = () => {
-    setAuthToken(null);
+    setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
