@@ -17,10 +17,10 @@ import { AuthContext } from "../context/AuthContext";
  * </ProtectedRoute>
  */
 const ProtectedRoute = ({ children }) => {
-  const { authToken } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const location = useLocation();
 
-  if (!authToken) {
+  if (!token) {
     // User is not authenticated
     // Redirect to login page and preserve the current location
     return <Navigate to="/login" replace state={{ from: location }} />;

@@ -12,12 +12,19 @@ const Dashboard = () => {
   const { user, token } = useAuth();
   const navigate = useNavigate();
 
-  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [data, setData] = useState({
+    numberOfInvestments: 0,
+    unverifiedUsers: 0,
+    numberOfAssets: 0,
+    numberOfTrips: 0,
+    totalInvestedAmount: 0,
+  });
+
   const col = ["To", "From", "Start Date", "End Date"];
-  console.log("DT: ", token)
-  console.log("DU: ", user)
+  console.log("DT: ", token);
+  console.log("DU: ", user);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -45,19 +52,67 @@ const Dashboard = () => {
 
     fetchData();
   }, [id, token]);
-  console.log("DD: ", data)
+  console.log("DD: ", data);
 
   const statscol = ["Time", "Truck", "Location", "Speed", "Trip Number"];
 
   const logrow = [
-    { time: "08:00", truck: "T-001", location: "Warehouse A", speed: "45 mph", tripNumber: "TR-1001" },
-    { time: "09:15", truck: "T-002", location: "Route 66", speed: "55 mph", tripNumber: "TR-1002" },
-    { time: "10:30", truck: "T-003", location: "City Center", speed: "30 mph", tripNumber: "TR-1003" },
-    { time: "11:45", truck: "T-004", location: "Highway 101", speed: "65 mph", tripNumber: "TR-1004" },
-    { time: "13:00", truck: "T-005", location: "Warehouse B", speed: "0 mph", tripNumber: "TR-1005" },
-    { time: "14:15", truck: "T-006", location: "Main Street", speed: "25 mph", tripNumber: "TR-1006" },
-    { time: "15:30", truck: "T-007", location: "Industrial Park", speed: "35 mph", tripNumber: "TR-1007" },
-    { time: "16:45", truck: "T-008", location: "Suburb Area", speed: "40 mph", tripNumber: "TR-1008" },
+    {
+      time: "08:00",
+      truck: "T-001",
+      location: "Warehouse A",
+      speed: "45 mph",
+      tripNumber: "TR-1001",
+    },
+    {
+      time: "09:15",
+      truck: "T-002",
+      location: "Route 66",
+      speed: "55 mph",
+      tripNumber: "TR-1002",
+    },
+    {
+      time: "10:30",
+      truck: "T-003",
+      location: "City Center",
+      speed: "30 mph",
+      tripNumber: "TR-1003",
+    },
+    {
+      time: "11:45",
+      truck: "T-004",
+      location: "Highway 101",
+      speed: "65 mph",
+      tripNumber: "TR-1004",
+    },
+    {
+      time: "13:00",
+      truck: "T-005",
+      location: "Warehouse B",
+      speed: "0 mph",
+      tripNumber: "TR-1005",
+    },
+    {
+      time: "14:15",
+      truck: "T-006",
+      location: "Main Street",
+      speed: "25 mph",
+      tripNumber: "TR-1006",
+    },
+    {
+      time: "15:30",
+      truck: "T-007",
+      location: "Industrial Park",
+      speed: "35 mph",
+      tripNumber: "TR-1007",
+    },
+    {
+      time: "16:45",
+      truck: "T-008",
+      location: "Suburb Area",
+      speed: "40 mph",
+      tripNumber: "TR-1008",
+    },
   ];
 
   return (
@@ -112,8 +167,10 @@ const Dashboard = () => {
                 />
               </div>
 
-              <h1 className="text-3xl font-bold mt-3 mb-2 text-[#FF9321]">Latest Updates</h1>
-              <LogTable row={logrow} col={statscol}/>
+              <h1 className="text-3xl font-bold mt-3 mb-2 text-[#FF9321]">
+                Latest Updates
+              </h1>
+              <LogTable row={logrow} col={statscol} />
               <p className="text-white">*Terms and Conditions Apply</p>
             </>
           )}
@@ -127,7 +184,9 @@ const Card = ({ title, value, subtext, subtextColor, button, textColor }) => (
   <div className="p-4 bg-[#493939] rounded-lg shadow-md">
     <h2 className={`text-lg font-bold mb-2 ${textColor}`}>{title}</h2>
     {value && (
-      <p className={`text-2xl sm:text-3xl font-semibold ${textColor}`}>{value}</p>
+      <p className={`text-2xl sm:text-3xl font-semibold ${textColor}`}>
+        {value}
+      </p>
     )}
     {subtext && <p className={`text-sm ${subtextColor}`}>{subtext}</p>}
     {button}
